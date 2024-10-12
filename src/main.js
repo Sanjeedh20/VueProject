@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
-import Header_comp from './components/Header_comp.vue'
 import CreateUser from './components/CreateUser.vue'
-import UserDetails from './components/UserDetails.vue'
-//import Get_comp from './components/Get_comp.vue'
+//import UserDetails from './components/UserDetails.vue'
+import Summary_Detail from './components/Summary_Detail.vue'
+import Header_comp from './components/Header_comp.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -18,8 +19,8 @@ const routes = [
   },
   {
     path: '/user/:id',   
-    name: 'UserDetails',
-    component: UserDetails
+    name: 'Summary',
+    component: Summary_Detail
   }
 ]
 

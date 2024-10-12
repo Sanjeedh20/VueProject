@@ -7,17 +7,16 @@
      <h2>User List</h2>
       <div v-for="user in users" :key="user.id" class="user-box">
         <div class="name-div">
-          Name: {{ user.name }}
+          <strong>Name : </strong> {{ user.name }}
         </div>
         <div class="btn-div">
              <button class="view-btn" @click="goToUserDetails(user.id)">View</button>
             <button class="del-btn" @click="deleteUser(user.id)">Delete</button> 
-        </div>
-        
+        </div>    
       </div>
      </div>
      <div v-if="isdeleted">
-       Id : {{ user.id }}  Name:{{ user.name }} Department:{{ user.dept }}  is Deleted 
+       <strong>Id : </strong> {{ user.id }}  <strong>Name : </strong>{{ user.name }} <strong>Department : </strong>{{ user.dept }}  is <strong>Deleted</strong> 
     </div>
     </div>
     
@@ -36,26 +35,26 @@ export default {
     },
     created() {
         this.fetchUsers();
+        console.log(this.loading);
+        
     },
     methods: {
         viewAbout() {
             this.$router.push('/create');
         },
         goToUserDetails(userId) {
-      this.$router.push({ name: 'UserDetails', params: { id: userId } });
+      this.$router.push({ name: 'Summary', params: { id: userId } });
       },
-        fetchUsers() {
-        this.loading=true;
-            axios.get('http://localhost:8085/JDBC/getjson')
-                .then(response => {
-                    setTimeout(() => {
-                    this.users = response.data.users;
-                    this.loading = false; 
-                    }, 1000);
-                })
-                .catch(error => {
-                    console.error('Error fetching users:', error);
-                });
+        async fetchUsers(){
+          this.loading=true;
+          try{
+            const response=await  axios.get('http://localhost:8085/JDBC/getjson');
+            this.users=response.data.users;
+            this.loading=false;
+          }
+          catch(error){
+            console.log('Error',error);
+          }
         },
         deleteUser(userId) {
             axios.delete(`http://localhost:8085/JDBC/deluserbyid?id=${userId}`)
@@ -69,7 +68,7 @@ export default {
                     }, 2000);
                 })
                 .catch(error => {
-                    console.error('Error deleting user:', error);
+                    console.error('Error', error);
                 });
         }
     }
